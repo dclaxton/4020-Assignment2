@@ -6,4 +6,7 @@
     <string name="history">Calorie history</string>
     <string name="menu">Calorie Counter</string>
     <string name="licensing">Licensing</string>
+    <string name="licensing_info">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</string>
+    <string name="licensing_information">Licensing Information</string>
+    <string name="to_menu">Main menu</string>
 </resources>

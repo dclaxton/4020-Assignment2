@@ -22,8 +22,8 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
 
         findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, AddFoodActivity.class));
-        findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, CalorieHistoryActivity.class));
-        findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, LicensingActivity.class));
+        findViewById(R.id.calorie_history_button).setOnClickListener(new GoToActivity(this, CalorieHistoryActivity.class));
+        findViewById(R.id.licensing_button).setOnClickListener(new GoToActivity(this, LicensingActivity.class));
     }
 
     public void onExitButton(final View view) {

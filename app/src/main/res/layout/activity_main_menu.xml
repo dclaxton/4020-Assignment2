@@ -13,8 +13,12 @@
         android:padding="8dp">
 
         <TextView
+            android:id="@+id/app_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
             android:text="@string/menu"
             android:textSize="20sp" />
     </RelativeLayout>
