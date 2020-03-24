@@ -8,5 +8,5 @@ package edu.apsu.csci.CalorieCounter.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AddFoodActivity extends AppCompatActivity {
+public class CalorieHistoryActivity extends AppCompatActivity {
 }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.apsu.csci.CalorieCounter.R;
+import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -19,6 +20,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, AddFoodActivity.class));
+        findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, CalorieHistoryActivity.class));
+        findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, LicensingActivity.class));
     }
 
     public void onExitButton(final View view) {
