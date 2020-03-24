@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">4020-Assignment2</string>
+    <string name="app_name">Calorie Counter</string>
 
     <string name="exit">Exit</string>
     <string name="entry">New entry</string>

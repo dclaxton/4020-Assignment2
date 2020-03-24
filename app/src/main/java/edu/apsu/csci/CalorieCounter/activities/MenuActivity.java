@@ -4,12 +4,14 @@
     Description: A simple calorie counting app using API data from the US Department of Agriculture
  */
 
-package edu.apsu.csci.CalorieCounter;
+package edu.apsu.csci.CalorieCounter.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+
+import edu.apsu.csci.CalorieCounter.R;
 
 public class MenuActivity extends AppCompatActivity {
 
