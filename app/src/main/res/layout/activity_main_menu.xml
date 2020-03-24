@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MenuActivity">
+    tools:context="edu.apsu.csci.CalorieCounter.activities.MenuActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
