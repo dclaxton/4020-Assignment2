@@ -1,4 +1,4 @@
 package edu.apsu.csci.CalorieCounter.db;
 
-public class DataBase {
+public class Database {
 }
