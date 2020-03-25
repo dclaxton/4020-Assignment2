@@ -19,4 +19,5 @@
     <string name="select_date">Select date:</string>
     <string name="enter_food">Enter food:</string>
     <string name="enter_quantity">Enter quantity:</string>
+    <string name="submit">Submit</string>
 </resources>
