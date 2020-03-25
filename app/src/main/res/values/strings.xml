@@ -6,15 +6,17 @@
     <string name="history">Calorie history</string>
     <string name="menu">Calorie Counter</string>
     <string name="licensing">Licensing</string>
-    <string name="licensing_info">U.S. Department of Agriculture, Agricultural Research Service. FoodData Central, 2019. fdc.nal.usda.gov.</string>
+    <string name="licensing_info">U.S. Department of Agriculture, Agricultural Research Service.
+        FoodData Central, 2019. fdc.nal.usda.gov.</string>
     <string name="licensing_information">Licensing Information</string>
     <string name="to_menu">Main menu</string>
 
     <string name="previous_day">Previous day</string>
     <string name="next_day">Next day</string>
-    <string name="invalid_date">Invalid date entered!
- Please enter date in the format mm/dd/yyyy</string>
+    <string name="invalid_date">Invalid date entered! Please enter date in the format mm/dd/yyyy</string>
     <string name="invalid_year">Year must be between 2000&#8211;2100</string>
     <string name="date_format">MM/dd/yyyy</string>
-    <string name="select_date">Select date below:</string>
+    <string name="select_date">Select date:</string>
+    <string name="enter_food">Enter food:</string>
+    <string name="enter_quantity">Enter quantity:</string>
 </resources>
