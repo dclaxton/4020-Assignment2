@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,11 +25,11 @@ import edu.apsu.csci.CalorieCounter.R;
 
 public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
     //private String api_url = "https://api.nal.usda.gov/fdc/v1/search?api_key=" + R.string.api_key + "&";
-    Uri.Builder builder;
+    private Uri.Builder builder;
 
     public QueryJSON(Context c, String searchParam)
     {
-        builder = Uri.parse("http://api.nal.usda.gov/fdc/v1/search").buildUpon();
+        builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/search").buildUpon();
         builder.appendQueryParameter("api_key", c.getResources().getString(R.string.api_key));
         builder.appendQueryParameter("generalSearchInput", searchParam);
     }
@@ -79,11 +80,13 @@ public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("Title:", resultData.foodTitle);
-        Log.i("Title:", resultData.foodID);
 
         return resultData;
     }
 
-
+    @Override
+    protected void onPostExecute(ResultData resultData) {
+        Log.i("Title:", resultData.foodTitle);
+        Log.i("FoodID:", resultData.foodID);
+    }
 }

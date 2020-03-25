@@ -20,10 +20,13 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import edu.apsu.csci.CalorieCounter.R;
+import edu.apsu.csci.CalorieCounter.classes.QueryJSON;
+import edu.apsu.csci.CalorieCounter.classes.ResultData;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 
 public class AddFoodActivity extends AppCompatActivity {
     private final Calendar mCalendar = Calendar.getInstance();
+    private QueryJSON query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,12 @@ public class AddFoodActivity extends AppCompatActivity {
                 new DatePickerDialog(AddFoodActivity.this, date, mCalendar
                         .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
                         mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                doQuery();
             }
         });
     }
@@ -59,4 +68,12 @@ public class AddFoodActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.weekday_text_view)).setText(
                 new SimpleDateFormat("EEEE", Locale.US).format(mCalendar.getTime()));
     }
+
+    private void doQuery() {
+        if (query == null) {
+            query = new QueryJSON(getApplicationContext(), "Cheddar Cheese");
+            query.execute();
+        }
+    }
+
 }
