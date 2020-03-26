@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,7 +23,6 @@ import java.util.Locale;
 
 import edu.apsu.csci.CalorieCounter.R;
 import edu.apsu.csci.CalorieCounter.classes.QueryJSON;
-import edu.apsu.csci.CalorieCounter.classes.ResultData;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 
 public class AddFoodActivity extends AppCompatActivity {
@@ -45,7 +46,24 @@ public class AddFoodActivity extends AppCompatActivity {
         findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                doQuery();
+            }
+        });
+
+        ((SearchView) findViewById(R.id.food_search_view)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.equals("")) {
+                    doQuery(query);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.equals("")) {
+                    //doQuery(newText);
+                }
+                return true;
             }
         });
     }
@@ -69,10 +87,11 @@ public class AddFoodActivity extends AppCompatActivity {
                 new SimpleDateFormat("EEEE", Locale.US).format(mCalendar.getTime()));
     }
 
-    private void doQuery() {
+    private void doQuery(String search) {
         if (query == null) {
-            query = new QueryJSON(getApplicationContext(), "Cheddar Cheese");
+            query = new QueryJSON(getApplicationContext(), search);
             query.execute();
+            query = null;
         }
     }
 

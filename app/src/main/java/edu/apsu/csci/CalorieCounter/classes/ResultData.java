@@ -1,8 +1,9 @@
 package edu.apsu.csci.CalorieCounter.classes;
 
+import java.util.ArrayList;
+
 public class ResultData {
-    String foodTitle = "";
-    String foodDesc = "";
-    String foodCompany = "";
-    String foodID = "";
+    ArrayList<String> foodTitles = new ArrayList<>();
+    ArrayList<String> companyNames = new ArrayList<>();
+    ArrayList<Integer> foodIDs = new ArrayList<>();
 }

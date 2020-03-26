@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 import edu.apsu.csci.CalorieCounter.R;
@@ -52,27 +53,21 @@ public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
                 jsonData.append(line);
             }
 
-            StringBuilder titleBuilder = new StringBuilder();
-            StringBuilder fdcIdBuilder = new StringBuilder();
-
             JSONObject reader = new JSONObject(jsonData.toString());
             JSONArray items = reader.getJSONArray("foods");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
 
                 String title = item.getString("description");
-                titleBuilder.append(title);
+                resultData.foodTitles.add(title);
+
                 String company = item.getString("brandOwner");
-                titleBuilder.append(" | " + company);
-                titleBuilder.append("\n----------\n");
+                resultData.companyNames.add(company);
 
                 String foodId = item.getString("fdcId");
-                fdcIdBuilder.append(foodId);
-                fdcIdBuilder.append("\n----------\n");
-            }
+                resultData.foodIDs.add(Integer.parseInt(foodId));
 
-            resultData.foodTitle = titleBuilder.toString();
-            resultData.foodID = fdcIdBuilder.toString();
+            }
 
             connection.disconnect();
         } catch (MalformedURLException e) {
@@ -88,7 +83,7 @@ public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
 
     @Override
     protected void onPostExecute(ResultData resultData) {
-        Log.i("Title:", resultData.foodTitle);
-        Log.i("FoodID:", resultData.foodID);
+        Log.i("Title:", resultData.foodTitles.toString());
+        Log.i("FoodID:", resultData.foodIDs.toString());
     }
 }
