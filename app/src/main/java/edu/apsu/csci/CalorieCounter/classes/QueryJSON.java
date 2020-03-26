@@ -63,7 +63,7 @@ public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
                 String title = item.getString("description");
                 titleBuilder.append(title);
                 String company = item.getString("brandOwner");
-                titleBuilder.append(" " + company);
+                titleBuilder.append(" | " + company);
                 titleBuilder.append("\n----------\n");
 
                 String foodId = item.getString("fdcId");
