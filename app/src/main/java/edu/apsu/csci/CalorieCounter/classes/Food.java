@@ -2,14 +2,14 @@ package edu.apsu.csci.CalorieCounter.classes;
 
 public class Food {
     private String name;
-    private int calories;
+    private int id;
 
     public Food() {
         this("", 0);
     }
 
-    public Food(String name, int calories) {
-        this.calories = calories;
+    public Food(String name, int id) {
+        this.id = id;
         this.name = name;
     }
 
@@ -17,16 +17,16 @@ public class Food {
         return name;
     }
 
-    public int getCalories() {
-        return calories;
+    public int getId() {
+        return id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setCalories(int calories) {
-        this.calories = calories;
+    public void setId(int calories) {
+        this.id = id;
     }
 
     @Override

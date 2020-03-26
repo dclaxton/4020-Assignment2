@@ -35,8 +35,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="4dp">
+        android:padding="10dp">
 
         <ImageButton
             android:id="@+id/left_arrow"
@@ -45,9 +46,9 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:background="@null"
+            android:contentDescription="@string/previous_day"
             android:scaleType="centerInside"
-            android:src="@drawable/left_arrow"
-            android:contentDescription="@string/previous_day"/>
+            android:src="@drawable/left_arrow" />
 
         <TextView
             android:id="@+id/weekday_text_view"
@@ -63,9 +64,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/weekday_text_view"
             android:layout_centerHorizontal="true"
-            android:inputType="date"
             android:focusable="false"
             android:hint="@string/date_format"
+            android:inputType="date"
             tools:text="03/30/2020" />
 
         <ImageButton
@@ -75,9 +76,9 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@null"
+            android:contentDescription="@string/next_day"
             android:scaleType="centerInside"
-            android:src="@drawable/right_arrow"
-            android:contentDescription="@string/next_day" />
+            android:src="@drawable/right_arrow" />
     </RelativeLayout>
 
     <ScrollView
@@ -91,11 +92,6 @@
             android:layout_gravity="top"
             android:orientation="horizontal">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight=".16" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -106,7 +102,7 @@
                     android:id="@+id/food_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:layout_marginTop="20dp"
                     android:text="@string/enter_food"
                     android:textAlignment="center"
                     android:textSize="20sp" />
@@ -115,13 +111,19 @@
                     android:id="@+id/food_search_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"/>
+                    android:padding="10dp">
+                </SearchView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/results_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/quantity_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:layout_marginTop="20dp"
                     android:text="@string/enter_quantity"
                     android:textAlignment="center"
                     android:textSize="20sp" />
@@ -132,14 +134,17 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="10dp"
-                    android:focusable="false"
                     android:inputType="number" />
+
+                <Button
+                    android:id="@+id/submit_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_gravity="center"
+                    android:text="@string/submit" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight=".16" />
         </LinearLayout>
     </ScrollView>
 
