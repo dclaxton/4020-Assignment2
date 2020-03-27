@@ -9,6 +9,7 @@ package edu.apsu.csci.CalorieCounter.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.SearchView;
@@ -19,15 +20,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import edu.apsu.csci.CalorieCounter.R;
+import edu.apsu.csci.CalorieCounter.classes.Food;
 import edu.apsu.csci.CalorieCounter.classes.QueryJSON;
+import edu.apsu.csci.CalorieCounter.db.DbDataSource;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 
 public class AddFoodActivity extends AppCompatActivity {
     private final Calendar mCalendar = Calendar.getInstance();
     private QueryJSON query;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,5 +100,6 @@ public class AddFoodActivity extends AppCompatActivity {
             query = null;
         }
     }
+
 
 }

@@ -29,4 +29,7 @@ public class MenuActivity extends AppCompatActivity {
     public void onExitButton(final View view) {
         finish();
     }
+
+
+
 }
