@@ -1,5 +1,6 @@
 package edu.apsu.csci.CalorieCounter.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -57,6 +58,42 @@ public class DbDataSource {
 
 
         return foods;
+
+    }
+
+    public Food createFood(String foodString,int id,Date dateCreated,double calories)
+    {
+        ContentValues contentValues = new ContentValues();
+
+        //any data we want to put into the DB we add to content values
+        //put in food name
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(),foodString);
+        ///put in data created
+        contentValues.put(MySqlLiteHelper.DetailsColumns.data_created.toString(),dateCreated.toString());
+        //put id into it
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(),id);
+        //put cal into it
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(),calories);
+        //fill out all fields then insert it
+
+        //insert into food table food name, food id, datecreated, calories
+
+        database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE,null,contentValues);
+
+
+        //might need to seperate this into a different function called getfoodfromdb()
+        String[] columnNames = MySqlLiteHelper.DetailsColumns.names();
+
+        //get back the food we just created
+        Cursor cursor = database.query(MySqlLiteHelper.FOOD_DETAILS_TABLE, columnNames,MySqlLiteHelper.DetailsColumns.food_id
+                         + " = " + id,null,null,null,null);
+
+        cursor.moveToFirst();
+
+        Food food = cursorToFood(cursor);
+        cursor.close();
+
+        return food;
 
     }
 
