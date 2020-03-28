@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.telecom.Call;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,14 +45,14 @@ public class DbDataSource {
 
         String columns[] = MySqlLiteHelper.DetailsColumns.names();
 
-        Cursor cursor = database.query(MySqlLiteHelper.FOOD_DETAILS_TABLE,columns,null,null,null,null,null);
-        cursor.moveToNext();
+        Cursor cursor = database.query(MySqlLiteHelper.FOOD_DETAILS_TABLE,columns,null,null,null,null, null);
+        cursor.moveToFirst();
 
-        while(!cursor.isAfterLast())
-        {
+        while(!cursor.isAfterLast()) {
             Food food = cursorToFood(cursor);
             foods.add(food);
             cursor.moveToNext();
+            Log.i("SQL CHECK","check: " + food.getCalories());
         }
 
         cursor.close();
@@ -134,6 +135,10 @@ public class DbDataSource {
         food.setName(foodName);
 
         String datestr = cursor.getString(MySqlLiteHelper.DetailsColumns.data_created.ordinal());
+        food.setDateCreated(datestr);
+
+        double calories = cursor.getDouble(MySqlLiteHelper.DetailsColumns.food_calories.ordinal());
+        food.setCalories(calories);
 
         DateFormat dateFormat = new SimpleDateFormat("EEE MMM DD kk:mm:ss z yyyy", Locale.ENGLISH);
 

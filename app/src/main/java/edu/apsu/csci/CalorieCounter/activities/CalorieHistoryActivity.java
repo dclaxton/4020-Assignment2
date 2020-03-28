@@ -82,12 +82,14 @@ public class CalorieHistoryActivity extends ListActivity {
 
         List<Food> foodList = dataSource.getAllFood();
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         Food food = (Food) l.getItemAtPosition(position);
 
 
-        builder.setMessage( "food id is: "
+        builder.setMessage( "Name: " + foodList.get(position).getName() + "\n"
+                + "Calories: " + foodList.get(position).getCalories() + "\n"
+                +"Date Created: " + foodList.get(position).getDateCreated()
+
 
         );
 
