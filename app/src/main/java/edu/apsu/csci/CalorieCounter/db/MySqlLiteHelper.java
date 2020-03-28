@@ -7,10 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MySqlLiteHelper extends SQLiteOpenHelper {
 // data, id, food name, cals
 
-
     private static final String DB_NAME = "fooddetails.sqlite";
     private static final int DB_VERSION = 1;
-
     public static final String FOOD_DETAILS_TABLE = "Details";
 
     public enum DetailsColumns
@@ -31,8 +29,6 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
             }
             return names;
         }
-
-
     }
 
     public MySqlLiteHelper(Context context)
@@ -52,9 +48,6 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 ");";
 
         db.execSQL(sql);
-
-
-
     }
 
     @Override
