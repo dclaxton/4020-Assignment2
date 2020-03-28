@@ -7,6 +7,7 @@
 package edu.apsu.csci.CalorieCounter.activities;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
@@ -27,25 +28,27 @@ public class CalorieHistoryActivity extends ListActivity {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_view_calorie_history);
 
         dataSource = new DbDataSource(getApplicationContext());
 
 
     }
 
+
+
+/*
     @Override
     protected void onStop() {
         super.onStop();
-
         dataSource.close();
     }
-
+*/
     @Override
     protected void onStart() {
         super.onStart();
-
         dataSource.open();
 
         List<Food> foods = dataSource.getAllFood();
@@ -57,6 +60,19 @@ public class CalorieHistoryActivity extends ListActivity {
 
 
     }
+
+    public void addFood(Food food)
+    {
+        ArrayAdapter<Food> adapter = (ArrayAdapter<Food>) getListAdapter();
+
+        adapter.add(food);
+        adapter.notifyDataSetChanged();
+
+
+
+    }
+
+
 
 
 

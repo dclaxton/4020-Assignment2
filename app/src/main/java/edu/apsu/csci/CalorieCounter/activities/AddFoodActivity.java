@@ -18,8 +18,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 //import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,13 +34,16 @@ import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 public class AddFoodActivity extends AppCompatActivity {
     private final Calendar mCalendar = Calendar.getInstance();
     private QueryJSON query;
-
+    private DbDataSource dataSource;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
+
+        dataSource = new DbDataSource(getApplicationContext());
+
 
         findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivity(this, MenuActivity.class));
         findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
@@ -52,6 +57,20 @@ public class AddFoodActivity extends AppCompatActivity {
         findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
+                //we need to add the food to the database
+                //test function for now until all data is saved
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Calendar c = Calendar.getInstance();
+                String dateStr = sdf.format(c.getTime());
+
+                int foodId = 0023;
+                double calories = 230;
+                String foodName = "Cheese";
+
+                //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
+
+                Food food = dataSource.createFood(foodName,foodId,dateStr,calories);
+
             }
         });
 

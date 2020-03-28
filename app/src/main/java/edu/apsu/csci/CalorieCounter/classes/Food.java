@@ -1,5 +1,7 @@
 package edu.apsu.csci.CalorieCounter.classes;
 
+import androidx.annotation.NonNull;
+
 public class Food {
     private String name;
     private int id;
@@ -35,5 +37,11 @@ public class Food {
             return name.equals(((Food) o).name);
         else
             return false;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name;
     }
 }

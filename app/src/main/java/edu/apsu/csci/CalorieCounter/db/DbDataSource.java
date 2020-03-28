@@ -61,24 +61,27 @@ public class DbDataSource {
 
     }
 
-    public Food createFood(String foodString,int id,Date dateCreated,double calories)
+    public Food createFood(String foodName,int id,String dateCreated,double calories)
     {
         ContentValues contentValues = new ContentValues();
 
         //any data we want to put into the DB we add to content values
         //put in food name
-        contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(),foodString);
-        ///put in data created
-        contentValues.put(MySqlLiteHelper.DetailsColumns.data_created.toString(),dateCreated.toString());
-        //put id into it
+        // put id into it
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(),id);
-        //put cal into it
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(),foodName);
+
+        // put cal into it
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(),calories);
+        ///put in data created
+        contentValues.put(MySqlLiteHelper.DetailsColumns.data_created.toString(),dateCreated);
+
+
         //fill out all fields then insert it
 
         //insert into food table food name, food id, datecreated, calories
-
-        database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE,null,contentValues);
+         open();
+         database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE,null,contentValues);
 
 
         //might need to seperate this into a different function called getfoodfromdb()
@@ -94,6 +97,28 @@ public class DbDataSource {
         cursor.close();
 
         return food;
+
+    }
+
+    public void addFoodToDb(String foodString,int id,String dateCreated,double calories)
+    {
+        ContentValues contentValues = new ContentValues();
+
+        //any data we want to put into the DB we add to content values
+        //put in food name
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(),foodString);
+        ///put in data created
+        contentValues.put(MySqlLiteHelper.DetailsColumns.data_created.toString(),dateCreated);
+        //put id into it
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(),id);
+        //put cal into it
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(),calories);
+        //fill out all fields then insert it
+
+        //insert into food table food name, food id, datecreated, calories
+
+        database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE,null,contentValues);
+
 
     }
 
