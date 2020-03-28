@@ -95,6 +95,7 @@ public class DbDataSource {
 
         Food food = cursorToFood(cursor);
         cursor.close();
+        close();
 
         return food;
 

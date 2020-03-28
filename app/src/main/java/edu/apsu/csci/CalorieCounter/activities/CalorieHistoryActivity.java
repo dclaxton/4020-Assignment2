@@ -6,9 +6,12 @@
 
 package edu.apsu.csci.CalorieCounter.activities;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
@@ -20,6 +23,7 @@ import edu.apsu.csci.CalorieCounter.R;
 import edu.apsu.csci.CalorieCounter.classes.Food;
 import edu.apsu.csci.CalorieCounter.db.DbDataSource;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class CalorieHistoryActivity extends ListActivity {
 
@@ -72,8 +76,28 @@ public class CalorieHistoryActivity extends ListActivity {
 
     }
 
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+
+
+        List<Food> foodList = dataSource.getAllFood();
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Food food = (Food) l.getItemAtPosition(position);
+
+
+        builder.setMessage( "food id is: "
+
+        );
+
+        builder.setPositiveButton("OK",null);
+        builder.show();
 
 
 
+
+
+    }
 
 }

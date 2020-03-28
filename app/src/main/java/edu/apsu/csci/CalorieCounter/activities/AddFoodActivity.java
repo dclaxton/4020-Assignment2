@@ -63,9 +63,9 @@ public class AddFoodActivity extends AppCompatActivity {
                 Calendar c = Calendar.getInstance();
                 String dateStr = sdf.format(c.getTime());
 
-                int foodId = 0023;
+                int foodId = 0024;
                 double calories = 230;
-                String foodName = "Cheese";
+                String foodName = "Steak";
 
                 //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
 
