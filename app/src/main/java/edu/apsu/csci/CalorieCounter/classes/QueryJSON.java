@@ -85,5 +85,8 @@ public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
     protected void onPostExecute(ResultData resultData) {
         Log.i("Title:", resultData.foodTitles.toString());
         Log.i("FoodID:", resultData.foodIDs.toString());
+
+
+
     }
 }
