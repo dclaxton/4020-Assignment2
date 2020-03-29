@@ -9,6 +9,8 @@ package edu.apsu.csci.CalorieCounter.activities;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -113,6 +115,8 @@ public class AddFoodActivity extends AppCompatActivity {
     }
 
     private void doQuery(String search) {
+
+
         if (query == null) {
             query = new QueryJSON(getApplicationContext(), search);
             query.execute();
