@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,7 +36,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -56,15 +54,18 @@ public class AddFoodActivity extends AppCompatActivity {
     private JSONResultData data = new JSONResultData();
     private QueryJSON query;
     private AutoCompleteTextView editText;
+    private AlertDialog.Builder aBuilder;
 
 
 
     //for database
     private DbDataSource dataSource;
     private String foodName;
-    private int foodId;
+    private int foodID;
     private String dateEntry;
     private double calories;
+
+    private static final double CALORIE_BASELINE = 100.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,8 +162,8 @@ public class AddFoodActivity extends AppCompatActivity {
     private void doQuery(String search) {
         if (query == null) {
             try {
-                if (Integer.parseInt(search) == foodId) {
-                    query = new QueryJSON(getApplicationContext(), foodId);
+                if (Integer.parseInt(search) == foodID) {
+                    query = new QueryJSON(getApplicationContext(), foodID);
                 }
             }
             catch (NumberFormatException e) {
@@ -173,9 +174,6 @@ public class AddFoodActivity extends AppCompatActivity {
             query = null;
         }
     }
-
-
-
 
     private class QueryJSON extends AsyncTask<Void,Void, JSONResultData> {
         private Uri.Builder builder;
@@ -223,8 +221,12 @@ public class AddFoodActivity extends AppCompatActivity {
                 JSONObject reader = new JSONObject(jsonData.toString());
 
                 // If the URL contains a food ID, browse the Food Details JSON
-                if (url.toString().contains(Integer.toString(foodId))) {
+                if (url.toString().contains(Integer.toString(foodID))) {
                     JSONArray items = reader.getJSONArray("foodNutrients");
+                    String servingSize = reader.getString("servingSize");
+
+                    resultData.servingSizeWeight = Double.parseDouble(servingSize);
+
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
                         JSONObject nutrient = item.getJSONObject("nutrient");
@@ -267,12 +269,15 @@ public class AddFoodActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final JSONResultData resultData) {
             super.onPostExecute(resultData);
-            Log.i("Calories:", Double.toString(resultData.caloriesPer100g));
 
+            if (resultData.caloriesPer100g > 0) {
+                EditText editText = findViewById(R.id.quantity_edit_text);
+                double quantity = Double.parseDouble(editText.getText().toString());
+
+                calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
+            }
 
             if (!resultData.foodTitles.isEmpty()) {
-                Log.i("Title:", resultData.foodTitles.toString());
-
                 editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_list_item_1, resultData.foodTitles));
                 editText.showDropDown();
@@ -280,9 +285,7 @@ public class AddFoodActivity extends AppCompatActivity {
                 editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        foodId = resultData.foodIDs.get(i);
-                        Log.i("FoodIDArray", resultData.foodIDs.toString());
-
+                        foodID = resultData.foodIDs.get(i);
                     }
                 });
 
@@ -291,41 +294,23 @@ public class AddFoodActivity extends AppCompatActivity {
             findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // we need to add the food to the database
-                    //  test function for now until all data is saved
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Calendar c = Calendar.getInstance();
-                    String dateStr = sdf.format(c.getTime());
+                    // ADD CHECKS FOR ALL EMPTY FIELDS!!
 
-                    // gets the food name
+                    // Get the food name
                     editText = findViewById(R.id.search_foods_actv);
                     foodName = editText.getText().toString();
 
-                    // get id
-                    doQuery(Integer.toString(foodId));
+                    // Get calories using the foodID
+                    doQuery(Integer.toString(foodID));
 
-                    // get calories
-                    calories = 234;
+                    dataSource.insertFood(foodName, foodID, dateEntry, calories);
 
-
-
-                    // dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
-                     Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
-
-                    AlertDialog.Builder abuilder = new AlertDialog.Builder(AddFoodActivity.this);
-
-
-                    abuilder.setMessage(foodName + " is added to database");
-
-                   abuilder.setPositiveButton("OK",null);
-                    abuilder.show();
-
-
-
+                    aBuilder = new AlertDialog.Builder(AddFoodActivity.this);
+                    aBuilder.setMessage(foodName + " is added to database");
+                    aBuilder.setPositiveButton("OK", null);
+                    aBuilder.show();
                 }
             });
-
-
         }
     }
 }

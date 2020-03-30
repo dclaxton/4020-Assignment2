@@ -51,13 +51,14 @@ public class DbDataSource {
         return foods;
     }
 
-    public void insertFood(String foodName,int id,String dateCreated,double calories) {
+    public void insertFood(String foodName, int id, String dateCreated, double calories) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(),id);
-        contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(),foodName);
-        contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(),calories);
-        contentValues.put(MySqlLiteHelper.DetailsColumns.date_created.toString(),dateCreated);
-        database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE,null,contentValues);
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(), id);
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(), foodName);
+        contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(), calories);
+        contentValues.put(MySqlLiteHelper.DetailsColumns.date_created.toString(), dateCreated);
+
+        database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE, null, contentValues);
     }
 
     private Food cursorToFood(Cursor cursor)

@@ -8,4 +8,5 @@ public class JSONResultData {
     public ArrayList<Integer> foodIDs = new ArrayList<>();
 
     public double caloriesPer100g;
+    public double servingSizeWeight;
 }
