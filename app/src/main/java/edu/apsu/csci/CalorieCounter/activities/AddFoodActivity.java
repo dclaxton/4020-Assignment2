@@ -55,6 +55,13 @@ public class AddFoodActivity extends AppCompatActivity {
     private QueryJSON query;
     private DbDataSource dataSource;
     private AutoCompleteTextView editText = null;
+    //for database
+    private String foodName;
+    private int foodId;
+    private String dateEntry;
+    private double calories;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +88,22 @@ public class AddFoodActivity extends AppCompatActivity {
                 Calendar c = Calendar.getInstance();
                 String dateStr = sdf.format(c.getTime());
 
-                int foodId = 0024;
-                double calories = 230;
-                String foodName = "Steak";
+                //gets the food name
+                editText = findViewById(R.id.search_foods_actv);
+                foodName = editText.getText().toString();
+
+                //get id
+                foodId = 0024;
+
+                //get calories
+                calories = 230;
+
+
+
 
                 //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
 
-                Food food = dataSource.createFood(foodName,foodId,dateStr,calories);
+                Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
 
             }
         });
@@ -139,7 +155,12 @@ public class AddFoodActivity extends AppCompatActivity {
             mCalendar.set(Calendar.YEAR, year);
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            dateEntry = (monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
+
             updateDate();
+
+
         }
 
     };
@@ -150,6 +171,8 @@ public class AddFoodActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.weekday_text_view)).setText(
                 new SimpleDateFormat("EEEE", Locale.US).format(mCalendar.getTime()));
     }
+
+   
 
     private void doQuery(String search) {
         if (query == null) {
@@ -222,9 +245,13 @@ public class AddFoodActivity extends AppCompatActivity {
             Log.i("Title:", resultData.foodTitles.toString());
             Log.i("FoodID:", resultData.foodIDs.toString());
 
+
             editText.setAdapter(
                     new ArrayAdapter<String>(getApplicationContext(),
                             android.R.layout.simple_list_item_1, resultData.foodTitles));
+
+
+
         }
     }
 }
