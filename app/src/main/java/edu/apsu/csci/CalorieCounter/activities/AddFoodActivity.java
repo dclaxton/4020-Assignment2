@@ -7,6 +7,7 @@
 package edu.apsu.csci.CalorieCounter.activities;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -55,6 +56,8 @@ public class AddFoodActivity extends AppCompatActivity {
     private JSONResultData data = new JSONResultData();
     private QueryJSON query;
     private AutoCompleteTextView editText;
+
+
 
     //for database
     private DbDataSource dataSource;
@@ -177,6 +180,8 @@ public class AddFoodActivity extends AppCompatActivity {
     private class QueryJSON extends AsyncTask<Void,Void, JSONResultData> {
         private Uri.Builder builder;
         int pos;
+        Context context = getApplicationContext();
+
 
 
         // Constructor for Food Search API
@@ -198,6 +203,7 @@ public class AddFoodActivity extends AppCompatActivity {
         @Override
         protected JSONResultData doInBackground(Void... voids) {
             JSONResultData resultData = new JSONResultData();
+
 
             try {
                 // Establish the connection
@@ -305,6 +311,16 @@ public class AddFoodActivity extends AppCompatActivity {
 
                     // dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
                      Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
+
+                    AlertDialog.Builder abuilder = new AlertDialog.Builder(AddFoodActivity.this);
+
+
+                    abuilder.setMessage(foodName + " is added to database");
+
+                   abuilder.setPositiveButton("OK",null);
+                    abuilder.show();
+
+
 
                 }
             });
