@@ -16,6 +16,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -27,7 +28,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -44,24 +45,22 @@ import javax.net.ssl.HttpsURLConnection;
 
 import edu.apsu.csci.CalorieCounter.R;
 import edu.apsu.csci.CalorieCounter.classes.Food;
-import edu.apsu.csci.CalorieCounter.classes.ResultData;
+import edu.apsu.csci.CalorieCounter.classes.JSONResultData;
 import edu.apsu.csci.CalorieCounter.db.DbDataSource;
-import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivityClosingPrevious;
 
 public class AddFoodActivity extends AppCompatActivity {
     private final Calendar mCalendar = Calendar.getInstance();
-    private ResultData data = new ResultData();
+    private JSONResultData data = new JSONResultData();
     private QueryJSON query;
-    private DbDataSource dataSource;
     private AutoCompleteTextView editText;
+
     //for database
+    private DbDataSource dataSource;
     private String foodName;
     private int foodId;
     private String dateEntry;
     private double calories;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,25 +80,25 @@ public class AddFoodActivity extends AppCompatActivity {
         });
         findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                //we need to add the food to the database
-                //test function for now until all data is saved
+            public void onClick(View v) {
+                // we need to add the food to the database
+                //  test function for now until all data is saved
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 Calendar c = Calendar.getInstance();
                 String dateStr = sdf.format(c.getTime());
 
-                //gets the food name
+                // gets the food name
                 editText = findViewById(R.id.search_foods_actv);
                 foodName = editText.getText().toString();
 
-                //get id
-                foodId = 0024;
+                // get id
+                doQuery(Integer.toString(foodId));
 
-                //get calories
-                calories = 230;
+                // get calories
+                //calories = 230;
 
                 //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
-                Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
+                //Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
 
             }
         });
@@ -123,6 +122,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -149,16 +149,24 @@ public class AddFoodActivity extends AppCompatActivity {
 
     private void doQuery(String search) {
         if (query == null) {
-            query = new QueryJSON(getApplicationContext(), search);
+            try {
+                if (Integer.parseInt(search) == foodId) {
+                    query = new QueryJSON(getApplicationContext(), foodId);
+                }
+            }
+            catch (NumberFormatException e) {
+                query = new QueryJSON(getApplicationContext(), search);
+            }
+
             query.execute();
             query = null;
         }
     }
 
-    private class QueryJSON extends AsyncTask<Void,Void,ResultData> {
-        //private String api_url = "https://api.nal.usda.gov/fdc/v1/search?api_key=" + R.string.api_key + "&";
+    private class QueryJSON extends AsyncTask<Void,Void, JSONResultData> {
         private Uri.Builder builder;
 
+        // Constructor for Food Search API
         public QueryJSON(Context c, String searchParam)
         {
             builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/search").buildUpon();
@@ -166,11 +174,20 @@ public class AddFoodActivity extends AppCompatActivity {
             builder.appendQueryParameter("generalSearchInput", searchParam);
         }
 
+        // Constructor  for Food Details API
+        public QueryJSON(Context c, int foodId) {
+            builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/").buildUpon();
+            builder.appendPath(Integer.toString(foodId));
+            builder.appendQueryParameter("api_key", c.getResources().getString(R.string.api_key));
+        }
+
+        // Searches through the JSON from the API call and returns necessary data
         @Override
-        protected ResultData doInBackground(Void... voids) {
-            ResultData resultData = new ResultData();
+        protected JSONResultData doInBackground(Void... voids) {
+            JSONResultData resultData = new JSONResultData();
 
             try {
+                // Establish the connection
                 URL url = new URL(builder.toString());
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
@@ -185,19 +202,35 @@ public class AddFoodActivity extends AppCompatActivity {
                 }
 
                 JSONObject reader = new JSONObject(jsonData.toString());
-                JSONArray items = reader.getJSONArray("foods");
-                for (int i = 0; i < items.length(); i++) {
-                    JSONObject item = items.getJSONObject(i);
 
-                    String title = item.getString("description");
-                    resultData.foodTitles.add(title);
+                // If the URL contains a food ID, browse the Food Details JSON
+                if (url.toString().contains(Integer.toString(foodId))) {
+                    JSONArray items = reader.getJSONArray("foodNutrients");
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject item = items.getJSONObject(i);
+                        JSONObject nutrient = item.getJSONObject("nutrient");
 
-                    String company = item.getString("brandOwner");
-                    resultData.companyNames.add(company);
+                        if (nutrient.getString("unitName").equals("kcal")) {
+                            String calories = item.getString("amount");
+                            resultData.caloriesPer100g = Double.parseDouble(calories);
+                        }
+                    }
 
-                    String foodId = item.getString("fdcId");
-                    resultData.foodIDs.add(Integer.parseInt(foodId));
+                    // If the URL does not have a food ID, browse the Food Search JSON
+                } else {
+                    JSONArray items = reader.getJSONArray("foods");
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject item = items.getJSONObject(i);
 
+                        String title = item.getString("description");
+                        resultData.foodTitles.add(title);
+
+                        String company = item.getString("brandOwner");
+                        resultData.companyNames.add(company);
+
+                        String foodId = item.getString("fdcId");
+                        resultData.foodIDs.add(Integer.parseInt(foodId));
+                    }
                 }
 
                 connection.disconnect();
@@ -213,14 +246,26 @@ public class AddFoodActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ResultData resultData) {
+        protected void onPostExecute(final JSONResultData resultData) {
             super.onPostExecute(resultData);
-            Log.i("Title:", resultData.foodTitles.toString());
-            Log.i("FoodID:", resultData.foodIDs.toString());
+            Log.i("Calories:", Double.toString(resultData.caloriesPer100g));
 
-            editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
-                    android.R.layout.simple_list_item_1, resultData.foodTitles));
-            editText.showDropDown();
+            if (!resultData.foodTitles.isEmpty()) {
+                Log.i("Title:", resultData.foodTitles.toString());
+
+                editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1, resultData.foodTitles));
+                editText.showDropDown();
+
+                editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        foodId = resultData.foodIDs.get(i);
+                        Log.i("FoodIDArray", resultData.foodIDs.toString());
+                    }
+                });
+
+            }
         }
     }
 }
