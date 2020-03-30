@@ -15,10 +15,12 @@ import edu.apsu.csci.CalorieCounter.R;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
 
 public class MenuActivity extends AppCompatActivity {
+    public static boolean isOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MenuActivity.isOpen = true;
         setContentView(R.layout.activity_main_menu);
 
         findViewById(R.id.new_entry_button).setOnClickListener(new GoToActivity(this, AddFoodActivity.class));
@@ -30,6 +32,9 @@ public class MenuActivity extends AppCompatActivity {
         finish();
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isOpen = false;
+    }
 }

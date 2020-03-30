@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-//import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,13 +47,14 @@ import edu.apsu.csci.CalorieCounter.classes.Food;
 import edu.apsu.csci.CalorieCounter.classes.ResultData;
 import edu.apsu.csci.CalorieCounter.db.DbDataSource;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
+import edu.apsu.csci.CalorieCounter.listeners.GoToActivityClosingPrevious;
 
 public class AddFoodActivity extends AppCompatActivity {
     private final Calendar mCalendar = Calendar.getInstance();
     private ResultData data = new ResultData();
     private QueryJSON query;
     private DbDataSource dataSource;
-    private AutoCompleteTextView editText = null;
+    private AutoCompleteTextView editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
         dataSource = new DbDataSource(this);
 
-        findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivity(this, MenuActivity.class));
+        findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivityClosingPrevious(this, MenuActivity.class));
         findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,29 +92,7 @@ public class AddFoodActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        ((SearchView) findViewById(R.id.food_search_view)).setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (!query.equals("")) {
-                    doQuery(query);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!newText.equals("")) {
-                    //doQuery(newText);
-                }
-                return true;
-            }
-        });
-
-         */
-
         editText = findViewById(R.id.search_foods_actv);
-
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -128,10 +106,10 @@ public class AddFoodActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
     }
+
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -222,9 +200,9 @@ public class AddFoodActivity extends AppCompatActivity {
             Log.i("Title:", resultData.foodTitles.toString());
             Log.i("FoodID:", resultData.foodIDs.toString());
 
-            editText.setAdapter(
-                    new ArrayAdapter<String>(getApplicationContext(),
-                            android.R.layout.simple_list_item_1, resultData.foodTitles));
+            editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_list_item_1, resultData.foodTitles));
+            editText.showDropDown();
         }
     }
 }

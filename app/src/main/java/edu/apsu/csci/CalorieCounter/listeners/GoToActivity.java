@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.view.View;
 
 public class GoToActivity implements View.OnClickListener {
-    private Activity fromActivity;
+    Activity fromActivity;
     private Class toActivityClass;
 
     public GoToActivity(Activity fromActivity, Class<? extends Activity> toActivityClass) {
