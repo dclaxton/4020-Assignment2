@@ -14,6 +14,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public enum DetailsColumns
     {
         //for now we have
+        primary_key,
         food_id,
         food_name,
         food_calories,
@@ -40,11 +41,11 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String sql = "CREATE TABLE " + FOOD_DETAILS_TABLE + " (" +
-                DetailsColumns.food_id + " INTEGER NOT NULL UNIQUE , " +
+                DetailsColumns.primary_key + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DetailsColumns.food_id + " INTEGER NOT NULL , " +
                 DetailsColumns.food_name + " TEXT ," +
                 DetailsColumns.food_calories + " REAL, " +
-                DetailsColumns.date_created + " TEXT, " +
-                " PRIMARY KEY(\"food_id\") " +
+                DetailsColumns.date_created + " TEXT " +
                 ");";
 
         db.execSQL(sql);
