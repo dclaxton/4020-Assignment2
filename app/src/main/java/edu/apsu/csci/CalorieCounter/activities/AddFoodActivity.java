@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class AddFoodActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_food);
 
         dataSource = new DbDataSource(this);
+        dateEntry = "NO DATE PICKED";
 
         findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivityClosingPrevious(this, MenuActivity.class));
         findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
@@ -78,6 +80,8 @@ public class AddFoodActivity extends AppCompatActivity {
                         mCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+        /*
         findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,11 +101,15 @@ public class AddFoodActivity extends AppCompatActivity {
                 // get calories
                 //calories = 230;
 
+
+
                 //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
                 //Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
 
             }
         });
+
+         */
 
         editText = findViewById(R.id.search_foods_actv);
         editText.addTextChangedListener(new TextWatcher() {
@@ -163,8 +171,13 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     private class QueryJSON extends AsyncTask<Void,Void, JSONResultData> {
         private Uri.Builder builder;
+        int pos;
+
 
         // Constructor for Food Search API
         public QueryJSON(Context c, String searchParam)
@@ -250,6 +263,7 @@ public class AddFoodActivity extends AppCompatActivity {
             super.onPostExecute(resultData);
             Log.i("Calories:", Double.toString(resultData.caloriesPer100g));
 
+
             if (!resultData.foodTitles.isEmpty()) {
                 Log.i("Title:", resultData.foodTitles.toString());
 
@@ -262,10 +276,40 @@ public class AddFoodActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         foodId = resultData.foodIDs.get(i);
                         Log.i("FoodIDArray", resultData.foodIDs.toString());
+
                     }
                 });
 
             }
+
+            findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // we need to add the food to the database
+                    //  test function for now until all data is saved
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    Calendar c = Calendar.getInstance();
+                    String dateStr = sdf.format(c.getTime());
+
+                    // gets the food name
+                    editText = findViewById(R.id.search_foods_actv);
+                    foodName = editText.getText().toString();
+
+                    // get id
+                    doQuery(Integer.toString(foodId));
+
+                    // get calories
+                    calories = 234;
+
+
+
+                    // dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
+                     Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
+
+                }
+            });
+
+
         }
     }
 }

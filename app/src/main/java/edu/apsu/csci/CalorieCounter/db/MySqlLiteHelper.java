@@ -17,7 +17,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
         food_id,
         food_name,
         food_calories,
-        data_created;
+        date_created;
 
         public static String[] names()
         {
@@ -43,7 +43,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 DetailsColumns.food_id + " INTEGER NOT NULL UNIQUE , " +
                 DetailsColumns.food_name + " TEXT ," +
                 DetailsColumns.food_calories + " REAL, " +
-                DetailsColumns.data_created + " TEXT, " +
+                DetailsColumns.date_created + " TEXT, " +
                 " PRIMARY KEY(\"food_id\") " +
                 ");";
 
@@ -51,13 +51,17 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+
+
 
     }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         super.onDowngrade(db, oldVersion, newVersion);
+
+
 
 
     }

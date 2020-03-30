@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.telecom.Call;
 import android.util.Log;
 
 import java.text.DateFormat;
@@ -62,7 +61,7 @@ public class DbDataSource {
         // put cal into it
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(),calories);
         ///put in data created
-        contentValues.put(MySqlLiteHelper.DetailsColumns.data_created.toString(),dateCreated);
+        contentValues.put(MySqlLiteHelper.DetailsColumns.date_created.toString(),dateCreated);
         //fill out all fields then insert it
         //insert into food table food name, food id, datecreated, calories
          open();
@@ -86,7 +85,7 @@ public class DbDataSource {
         //put in food name
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(),foodString);
         ///put in data created
-        contentValues.put(MySqlLiteHelper.DetailsColumns.data_created.toString(),dateCreated);
+        contentValues.put(MySqlLiteHelper.DetailsColumns.date_created.toString(),dateCreated);
         //put id into it
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(),id);
         //put cal into it
@@ -103,7 +102,7 @@ public class DbDataSource {
         food.setId(foodId);
         String foodName = cursor.getString(MySqlLiteHelper.DetailsColumns.food_name.ordinal());
         food.setName(foodName);
-        String datestr = cursor.getString(MySqlLiteHelper.DetailsColumns.data_created.ordinal());
+        String datestr = cursor.getString(MySqlLiteHelper.DetailsColumns.date_created.ordinal());
         food.setDateCreated(datestr);
         double calories = cursor.getDouble(MySqlLiteHelper.DetailsColumns.food_calories.ordinal());
         food.setCalories(calories);
