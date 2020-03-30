@@ -243,7 +243,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
 
-                        String title = item.getString("description");
+                        String title = item.getString("description") + " | " + item.get("brandOwner");
                         resultData.foodTitles.add(title);
 
                         String company = item.getString("brandOwner");
