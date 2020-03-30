@@ -113,11 +113,14 @@ public class AddFoodActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                doQuery(charSequence.toString());
+                if (!editText.isPerformingCompletion()) {
+                    doQuery(charSequence.toString());
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+
             }
         });
     }
