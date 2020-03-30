@@ -1,11 +1,19 @@
-package edu.apsu.csci.CalorieCounter.classes;
+/*package edu.apsu.csci.CalorieCounter.classes;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -18,22 +26,26 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
 import edu.apsu.csci.CalorieCounter.R;
+import edu.apsu.csci.CalorieCounter.activities.AddFoodActivity;
 
 
 public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
     //private String api_url = "https://api.nal.usda.gov/fdc/v1/search?api_key=" + R.string.api_key + "&";
     private Uri.Builder builder;
+    Context mContext;
 
-
+    AutoCompleteTextView actv;
 
     public QueryJSON(Context c, String searchParam)
     {
+        this.mContext = c;
         builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/search").buildUpon();
         builder.appendQueryParameter("api_key", c.getResources().getString(R.string.api_key));
         builder.appendQueryParameter("generalSearchInput", searchParam);
@@ -86,13 +98,24 @@ public class QueryJSON extends AsyncTask<Void,Void,ResultData> {
     }
 
     @Override
-    protected void onPostExecute(ResultData resultData) {
-        Log.i("Title:", resultData.foodTitles.toString());
-        Log.i("FoodID:", resultData.foodIDs.toString());
-
-        
-
+    protected void onPreExecute() {
 
 
     }
+
+    @Override
+    protected void onPostExecute(ResultData resultData) {
+        super.onPostExecute(resultData);
+        Log.i("Title:", resultData.foodTitles.toString());
+        Log.i("FoodID:", resultData.foodIDs.toString());
+
+
+
+        Log.i("Titles:", resultData.foodTitles.toString());
+        ((AutoCompleteTextView) ((Activity) mContext).findViewById(R.id.search_foods_actv)).setAdapter(
+                new ArrayAdapter<String>(mContext.getApplicationContext(),
+                        android.R.layout.simple_list_item_1, resultData.foodTitles));
+    }
 }
+
+ */
