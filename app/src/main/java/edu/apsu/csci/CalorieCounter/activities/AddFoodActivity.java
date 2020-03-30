@@ -55,6 +55,13 @@ public class AddFoodActivity extends AppCompatActivity {
     private QueryJSON query;
     private DbDataSource dataSource;
     private AutoCompleteTextView editText;
+    //for database
+    private String foodName;
+    private int foodId;
+    private String dateEntry;
+    private double calories;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +88,18 @@ public class AddFoodActivity extends AppCompatActivity {
                 Calendar c = Calendar.getInstance();
                 String dateStr = sdf.format(c.getTime());
 
-                int foodId = 0024;
-                double calories = 230;
-                String foodName = "Steak";
+                //gets the food name
+                editText = findViewById(R.id.search_foods_actv);
+                foodName = editText.getText().toString();
+
+                //get id
+                foodId = 0024;
+
+                //get calories
+                calories = 230;
 
                 //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
-
-                Food food = dataSource.createFood(foodName,foodId,dateStr,calories);
+                Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
 
             }
         });
@@ -117,6 +129,9 @@ public class AddFoodActivity extends AppCompatActivity {
             mCalendar.set(Calendar.YEAR, year);
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            dateEntry = (monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
+
             updateDate();
         }
 
