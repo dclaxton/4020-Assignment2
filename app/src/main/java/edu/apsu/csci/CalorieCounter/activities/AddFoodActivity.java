@@ -15,7 +15,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -59,7 +58,7 @@ public class AddFoodActivity extends AppCompatActivity {
     private DbDataSource dataSource;
     private String foodName;
     private int foodID;
-    private String dateEntry;
+    private String datePicked;
 
     // Calories will be calculated per 100g
     private static final double CALORIE_BASELINE = 100.00;
@@ -71,7 +70,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
         // Initialize the DB source and initial date
         dataSource = new DbDataSource(this);
-        dateEntry = "";
+        datePicked = "";
 
         initializeCalendar();
 
@@ -136,7 +135,8 @@ public class AddFoodActivity extends AppCompatActivity {
             mCalendar.set(Calendar.YEAR, year);
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            dateEntry = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+
+            datePicked = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
             updateDate();
         }
 
@@ -155,13 +155,18 @@ public class AddFoodActivity extends AppCompatActivity {
         EditText dateText = findViewById(R.id.set_date_edit_text);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Calendar c = Calendar.getInstance();
+
         try {
             c.setTime(sdf.parse(dateText.getText().toString()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         c.add(Calendar.DATE, i);
-        dateText.setText(sdf.format(c.getTime()));
+
+        if (c.getTimeInMillis() < Calendar.getInstance().getTimeInMillis()) {
+            dateText.setText(sdf.format(c.getTime()));
+        }
     }
 
     // Executes the AsyncTask to make an API call
@@ -299,7 +304,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     double quantity = Double.parseDouble(et.getText().toString());
                     double calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
 
-                    dataSource.insertFood(foodName, foodID, dateEntry, calories);
+                    dataSource.insertFood(foodName, foodID, datePicked, calories);
                 }
 
             }

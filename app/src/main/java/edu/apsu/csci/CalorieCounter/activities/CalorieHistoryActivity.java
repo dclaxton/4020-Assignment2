@@ -28,7 +28,6 @@ import edu.apsu.csci.CalorieCounter.listeners.GoToActivityClosingPrevious;
 
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class CalorieHistoryActivity extends AppCompatActivity {
@@ -50,7 +49,8 @@ public class CalorieHistoryActivity extends AppCompatActivity {
         initializeCalendar();
     }
 
-    // Sets up the calendar
+    // Yes, this is a duplicate from AddFoodActivity. In a perfect world, more classes would be used
+    // to make sure the calendar is only initialized once
     private void initializeCalendar() {
         // Set up the calendar with date picker
         findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class CalorieHistoryActivity extends AppCompatActivity {
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            datePicked= (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
+            datePicked = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
             updateDate();
         }
     };
@@ -108,16 +108,21 @@ public class CalorieHistoryActivity extends AppCompatActivity {
         EditText dateText = findViewById(R.id.set_date_edit_text);
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Calendar c = Calendar.getInstance();
+
         try {
             c.setTime(sdf.parse(dateText.getText().toString()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         c.add(Calendar.DATE, i);
-        dateText.setText(sdf.format(c.getTime()));
-        datePicked = dateText.getText().toString();
-        datePicked = datePicked.substring(1, datePicked.length());
-        getFoods();
+
+        if (c.getTimeInMillis() < Calendar.getInstance().getTimeInMillis()) {
+            dateText.setText(sdf.format(c.getTime()));
+            datePicked = dateText.getText().toString();
+            datePicked = datePicked.substring(1);
+            getFoods();
+        }
     }
 
     // Gets a list of foods from the database
