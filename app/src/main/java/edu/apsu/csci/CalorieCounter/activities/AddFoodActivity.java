@@ -305,27 +305,24 @@ public class AddFoodActivity extends AppCompatActivity {
                     EditText et = findViewById(R.id.quantity_edit_text);
                     EditText dt = findViewById(R.id.set_date_edit_text);
                     if(dt.getText().toString().trim().length() > 0) {
-                        if(resultData.foodTitles.contains(foodName) && !foodName.equals("")) {
-                            if(et.getText().toString().trim().length() > 0) {
+                        if (resultData.foodTitles.contains(foodName) && !foodName.equals("")) {
+                            if (et.getText().toString().trim().length() > 0) {
                                 // Get calories using the foodID
                                 doQuery(Integer.toString(foodID));
                                 dataSource.insertFood(foodName, foodID, dateEntry, calories);
-                                aBuilder.setMessage(foodName + " is added to database");
+                                aBuilder.setMessage(foodName + " added for " + dt.getText().toString());
                                 aBuilder.show();
                             } else {
                                 aBuilder.setMessage("You must enter a valid Quantity!");
-                                AlertDialog ad = aBuilder.create();
-                                ad.show();
+                                aBuilder.show();
                             }
                         } else {
                             aBuilder.setMessage("You must enter a valid food!");
-                            AlertDialog ad = aBuilder.create();
-                            ad.show();
+                            aBuilder.show();
                         }
-                    } else {
+                    }else {
                         aBuilder.setMessage("You must select a valid date!");
-                        AlertDialog ad = aBuilder.create();
-                        ad.show();
+                        aBuilder.show();
                     }
                 }
             });
