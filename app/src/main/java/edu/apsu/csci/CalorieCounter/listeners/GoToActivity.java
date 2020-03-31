@@ -19,6 +19,7 @@ public class GoToActivity implements View.OnClickListener {
         this.toActivityClass = toActivityClass;
     }
 
+    // Passes an intent from one activity to another
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(fromActivity, toActivityClass);

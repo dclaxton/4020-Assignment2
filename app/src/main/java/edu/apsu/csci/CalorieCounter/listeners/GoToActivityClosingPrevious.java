@@ -16,6 +16,7 @@ public class GoToActivityClosingPrevious extends GoToActivity {
         super(fromActivity, toActivityClass);
     }
 
+    // Prevents a menu from going back to the previous activity when 'Exit' is pressed
     @Override
     public void onClick(View v) {
         if (!MenuActivity.isOpen) {

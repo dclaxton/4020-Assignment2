@@ -1,3 +1,9 @@
+/*
+    Authors: Daniel Davis, Dalton Claxton, Peyton White
+    Date: 30 March 2020
+    Description: A simple calorie counting app using API data from the US Department of Agriculture
+ */
+
 package edu.apsu.csci.CalorieCounter.classes;
 
 import androidx.annotation.NonNull;
@@ -12,7 +18,7 @@ public class Food {
         this("", 0,"",0);
     }
 
-    public Food(String name, int id,String dateCreated,double calories) {
+    private Food(String name, int id,String dateCreated,double calories) {
         this.id = id;
         this.name = name;
         this.dateCreated = dateCreated;
@@ -23,15 +29,15 @@ public class Food {
         return name;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setId(int calories) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 

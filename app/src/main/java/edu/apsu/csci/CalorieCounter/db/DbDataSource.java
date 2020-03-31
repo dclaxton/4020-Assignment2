@@ -1,9 +1,14 @@
+/*
+    Authors: Daniel Davis, Dalton Claxton, Peyton White
+    Date: 30 March 2020
+    Description: A simple calorie counting app using API data from the US Department of Agriculture
+ */
+
 package edu.apsu.csci.CalorieCounter.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -36,11 +41,13 @@ public class DbDataSource {
         database.close();
     }
 
+    // Gets all food from DB
     public List<Food> getAllFood() {
         List<Food> foods = new ArrayList<>();
         String columns[] = MySqlLiteHelper.DetailsColumns.names();
         Cursor cursor = database.query(MySqlLiteHelper.FOOD_DETAILS_TABLE,columns,null,null,null,null, null);
         cursor.moveToFirst();
+
         while(!cursor.isAfterLast()) {
             Food food = cursorToFood(cursor);
             foods.add(food);
@@ -51,35 +58,35 @@ public class DbDataSource {
         return foods;
     }
 
+    // Inserts a food into the DB
     public void insertFood(String foodName, int id, String dateCreated, double calories) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_id.toString(), id);
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(), foodName);
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(), calories);
         contentValues.put(MySqlLiteHelper.DetailsColumns.date_created.toString(), dateCreated);
+
         open();
         database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE, null, contentValues);
     }
 
+    // Casts a Cursor to a Food object
     private Food cursorToFood(Cursor cursor)
     {
         Food food = new Food();
+
         int foodId = cursor.getInt(MySqlLiteHelper.DetailsColumns.food_id.ordinal());
         food.setId(foodId);
+
         String foodName = cursor.getString(MySqlLiteHelper.DetailsColumns.food_name.ordinal());
         food.setName(foodName);
-        String datestr = cursor.getString(MySqlLiteHelper.DetailsColumns.date_created.ordinal());
-        food.setDateCreated(datestr);
+
+        String dateStr = cursor.getString(MySqlLiteHelper.DetailsColumns.date_created.ordinal());
+        food.setDateCreated(dateStr);
+
         double calories = cursor.getDouble(MySqlLiteHelper.DetailsColumns.food_calories.ordinal());
         food.setCalories(calories);
-        DateFormat dateFormat = new SimpleDateFormat("EEE MMM DD kk:mm:ss z yyyy", Locale.ENGLISH);
-        try {
-            Date date = dateFormat.parse(datestr);
-            // can clear the comment when date is made for food class
-            //food.setDate(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
         return food;
     }
 }

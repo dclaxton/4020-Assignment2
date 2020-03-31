@@ -38,35 +38,30 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
-import java.util.Date;
 import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import edu.apsu.csci.CalorieCounter.R;
-import edu.apsu.csci.CalorieCounter.classes.Food;
 import edu.apsu.csci.CalorieCounter.classes.JSONResultData;
 import edu.apsu.csci.CalorieCounter.db.DbDataSource;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivityClosingPrevious;
 
 public class AddFoodActivity extends AppCompatActivity {
     private final Calendar mCalendar = Calendar.getInstance();
-    private JSONResultData data = new JSONResultData();
     private QueryJSON query;
     private AutoCompleteTextView editText;
     private AlertDialog.Builder aBuilder;
 
-    //for database
+    // For database
     private DbDataSource dataSource;
     private String foodName;
-    private double qtyFood;
     private int foodID;
     private String dateEntry;
-    private double calories;
 
+    // Calories will be calculated per 100g
     private static final double CALORIE_BASELINE = 100.00;
 
     @Override
@@ -74,53 +69,15 @@ public class AddFoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
 
+        // Initialize the DB source and initial date
         dataSource = new DbDataSource(this);
-        dateEntry = "NO DATE PICKED";
+        dateEntry = "";
+
+        initializeCalendar();
 
         findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivityClosingPrevious(this, MenuActivity.class));
-        findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog dpDialog = new DatePickerDialog(
-                        AddFoodActivity.this, date, mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
-                dpDialog.getDatePicker().setMaxDate(mCalendar.getTimeInMillis());
-                dpDialog.show();
-            }
-        });
 
-        findViewById(R.id.right_arrow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText dateText = findViewById(R.id.set_date_edit_text);
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                Calendar c = Calendar.getInstance();
-                try {
-                    c.setTime(sdf.parse(dateText.getText().toString()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                c.add(Calendar.DATE, 1);
-                dateText.setText(sdf.format(c.getTime()));
-            }
-        });
-
-        findViewById(R.id.left_arrow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText dateText = findViewById(R.id.set_date_edit_text);
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                Calendar c = Calendar.getInstance();
-                try {
-                    c.setTime(sdf.parse(dateText.getText().toString()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                c.add(Calendar.DATE, -1);
-                dateText.setText(sdf.format(c.getTime()));
-            }
-        });
-
+        // Set up text changed listener for the food search bar
         editText = findViewById(R.id.search_foods_actv);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -141,6 +98,37 @@ public class AddFoodActivity extends AppCompatActivity {
 
     }
 
+    // Sets up the calendar
+    private void initializeCalendar() {
+        // Set up the calendar with date picker
+        findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog dpDialog = new DatePickerDialog(
+                        AddFoodActivity.this, date, mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                dpDialog.getDatePicker().setMaxDate(mCalendar.getTimeInMillis());
+                dpDialog.show();
+            }
+        });
+
+        // Initialize arrow image buttons to increase/decrease date
+        findViewById(R.id.right_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementDate(1);
+            }
+        });
+
+        findViewById(R.id.left_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementDate(-1);
+            }
+        });
+    }
+
+    // Handles the setting of the date
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -154,6 +142,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
     };
 
+    // Places the chosen date from the calender in the edit text and indicates the weekday
     private void updateDate() {
         ((EditText) findViewById(R.id.set_date_edit_text)).setText(
                 new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(mCalendar.getTime()));
@@ -161,6 +150,21 @@ public class AddFoodActivity extends AppCompatActivity {
                 new SimpleDateFormat("EEEE", Locale.US).format(mCalendar.getTime()));
     }
 
+    // Increases the date by a factor of i (can be negative to decrease)
+    private void incrementDate(int i) {
+        EditText dateText = findViewById(R.id.set_date_edit_text);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(dateText.getText().toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.add(Calendar.DATE, i);
+        dateText.setText(sdf.format(c.getTime()));
+    }
+
+    // Executes the AsyncTask to make an API call
     private void doQuery(String search) {
         if (query == null) {
             try {
@@ -176,20 +180,22 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     }
 
+    // QueryJSON class implemented in the same file to use member variables from AddFoodActivity
     private class QueryJSON extends AsyncTask<Void,Void, JSONResultData> {
         private Uri.Builder builder;
         int pos;
         Context context = getApplicationContext();
 
-        public QueryJSON(Context c, String searchParam)
+        // Builds a Uri for the Food Search API endpoint
+        QueryJSON(Context c, String searchParam)
         {
             builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/search").buildUpon();
             builder.appendQueryParameter("api_key", c.getResources().getString(R.string.api_key));
             builder.appendQueryParameter("generalSearchInput", searchParam);
         }
 
-        // Constructor  for Food Details API
-        public QueryJSON(Context c, int foodId) {
+        // Builds a Uri for the Food Details API endpoint
+        QueryJSON(Context c, int foodId) {
             builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/").buildUpon();
             builder.appendPath(Integer.toString(foodId));
             builder.appendQueryParameter("api_key", c.getResources().getString(R.string.api_key));
@@ -219,9 +225,17 @@ public class AddFoodActivity extends AppCompatActivity {
                 // If the URL contains a food ID, browse the Food Details JSON
                 if (url.toString().contains(Integer.toString(foodID))) {
                     JSONArray items = reader.getJSONArray("foodNutrients");
-                    String servingSize = reader.getString("servingSize");
 
-                    resultData.servingSizeWeight = Double.parseDouble(servingSize);
+                    // Store the serving size weight before going into nutrient array
+                    if (reader.has("servingSize")) {
+                        String servingSize = reader.getString("servingSize");
+                        resultData.servingSizeWeight = Double.parseDouble(servingSize);
+                    }
+
+                    // Calories will be multiplied by the standard serving size later on, but if
+                    // there is no recommended serving size then the calorie calculation will be per
+                    // 100g
+                    resultData.servingSizeWeight = 100.00;
 
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
@@ -234,7 +248,6 @@ public class AddFoodActivity extends AppCompatActivity {
                     }
                     // If the URL does not have a food ID, browse the Food Search JSON
                 } else {
-                    Log.i("URL", url.toString());
                     JSONArray items = reader.getJSONArray("foods");
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
@@ -263,10 +276,12 @@ public class AddFoodActivity extends AppCompatActivity {
             return resultData;
         }
 
+        // Happens after doQuery() is finished executing the AsyncTask
         @Override
         protected void onPostExecute(final JSONResultData resultData) {
             super.onPostExecute(resultData);
 
+            // Populates a different drop down list of foods every time the user types a letter
             if (!editText.isPerformingCompletion()) {
                 editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_list_item_1, resultData.foodTitles));
@@ -278,15 +293,19 @@ public class AddFoodActivity extends AppCompatActivity {
                     }
                 });
 
+                // Calculates the calories of the selected food once a quantity is entered
                 EditText et = findViewById(R.id.quantity_edit_text);
                 if (!et.getText().toString().matches("")) {
                     double quantity = Double.parseDouble(et.getText().toString());
-                    calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
+                    double calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
+
                     dataSource.insertFood(foodName, foodID, dateEntry, calories);
                 }
 
             }
 
+            // Handles the submit events at the end of the program; implemented after onPostExecute
+            // to take advantage of the resultData object
             findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -305,7 +324,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                 // Get calories using the foodID
                                 doQuery(Integer.toString(foodID));
 
-                                aBuilder.setMessage(foodName + " is added to database");
+                                aBuilder.setMessage(foodName + " successfully added!");
                                 aBuilder.show();
                             } else {
                                 aBuilder.setMessage("You must enter a valid Quantity!");
