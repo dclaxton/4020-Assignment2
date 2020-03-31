@@ -148,7 +148,7 @@ public class AddFoodActivity extends AppCompatActivity {
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            dateEntry = (monthOfYear + 1) + "-" + dayOfMonth + "-" + year;
+            dateEntry = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
 
             updateDate();
         }

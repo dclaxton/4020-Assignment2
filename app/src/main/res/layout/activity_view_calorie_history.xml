@@ -1,14 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tv"
-    android:textColor="#000055"
-    android:textSize="25sp"
-    android:padding="10sp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#ddddff"
-    android:gravity="left"
-    android:layout_height="wrap_content"
-    android:text="Text"
-    >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="edu.apsu.csci.CalorieCounter.activities.MenuActivity">
 
-</TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/app_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
+            android:text="@string/menu"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/to_menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"
+            android:text="@string/to_menu" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="16dp"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/left_arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:contentDescription="@string/previous_day"
+            android:scaleType="centerInside"
+            android:src="@drawable/left_arrow" />
+
+        <TextView
+            android:id="@+id/weekday_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/select_date"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/set_date_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weekday_text_view"
+            android:layout_centerHorizontal="true"
+            android:focusable="false"
+            android:hint="@string/date_format"
+            android:inputType="date"
+            tools:text="03/30/2020" />
+
+        <ImageButton
+            android:id="@+id/right_arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:contentDescription="@string/next_day"
+            android:scaleType="centerInside"
+            android:src="@drawable/right_arrow" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollviewfoods"
+        android:layout_width="match_parent"
+        android:layout_height="464dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewfood"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Date Selected"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textViewTotalCalories"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        android:textSize="30sp" />
+
+</LinearLayout>
