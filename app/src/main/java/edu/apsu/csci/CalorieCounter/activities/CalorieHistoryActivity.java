@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,14 +63,46 @@ public class CalorieHistoryActivity extends AppCompatActivity {
                 new DatePickerDialog(CalorieHistoryActivity.this, date, mCalendar
                         .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
                         mCalendar.get(Calendar.DAY_OF_MONTH)).show();
-
-
             }
         });
 
+        findViewById(R.id.right_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText dateText = findViewById(R.id.set_date_edit_text);
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                Calendar c = Calendar.getInstance();
+                try {
+                    c.setTime(sdf.parse(dateText.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                c.add(Calendar.DATE, 1);
+                dateText.setText(sdf.format(c.getTime()));
+                datePicked = dateText.getText().toString();
+                datePicked = datePicked.substring(1,datePicked.length());
+                getFoods();
+            }
+        });
 
-
-
+        findViewById(R.id.left_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText dateText = findViewById(R.id.set_date_edit_text);
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                Calendar c = Calendar.getInstance();
+                try {
+                    c.setTime(sdf.parse(dateText.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                c.add(Calendar.DATE, -1);
+                dateText.setText(sdf.format(c.getTime()));
+                datePicked = dateText.getText().toString();
+                datePicked = datePicked.substring(1,datePicked.length());
+                getFoods();
+            }
+        });
     }
 
     public void getFoods()
@@ -85,37 +119,22 @@ public class CalorieHistoryActivity extends AppCompatActivity {
         TextView tv = findViewById(R.id.textViewfood);
         ScrollView sv = findViewById(R.id.scrollviewfoods);
         TextView calorieCount = findViewById(R.id.textViewTotalCalories);
-        int CalCount = 0;
-
+        double CalCount = 0;
+        DecimalFormat df2 = new DecimalFormat("#.##");
         int i = 0;
         tv.setText("");
+        calorieCount.setText("Calories: None logged for today!");
         for(Food food: foods)
         {
 
             if(food.getDateCreated().compareTo(datePicked) == 0) {
-               // tv.append(food.getName() + "   " + food.getCalories() + " Cal" + "\n");
-                tv.setText(arrayList.get(i));
+                tv.append(food.getName() + "   " + food.getCalories() + " Cal" + "\n");
+                //tv.setText(arrayList.get(i));
                 CalCount += food.getCalories();
-
-
-                calorieCount.setText("Calories: " + CalCount + "");
-
+                calorieCount.setText("Calories: " + df2.format(CalCount) + "");
             }
-i++;
-
+            i++;
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -127,7 +146,7 @@ i++;
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             datePicked= (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
-
+            Log.i("DATEPICK1", datePicked);
             updateDate();
         }
 
@@ -143,40 +162,9 @@ i++;
         getFoods();
     }
 
-
-
-
-    /*
-    @Override
-    protected void onStop() {
-        super.onStop();
-        dataSource.close();
-    }
-*/
     @Override
     protected void onStart() {
         super.onStart();
         dataSource.open();
-
-
-
-
-/*
-        List<Food> foods = dataSource.getAllFood();
-
-        ArrayAdapter<Food> adapter = new ArrayAdapter<Food>(this,
-                R.layout.activity_view_calorie_history,foods);
-        setListAdapter(adapter);
-*/
-
-
-
-
-
-
     }
-
-
-
-
 }

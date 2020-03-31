@@ -38,6 +38,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import java.util.Date;
@@ -88,6 +89,37 @@ public class AddFoodActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.right_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText dateText = findViewById(R.id.set_date_edit_text);
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                Calendar c = Calendar.getInstance();
+                try {
+                    c.setTime(sdf.parse(dateText.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                c.add(Calendar.DATE, 1);
+                dateText.setText(sdf.format(c.getTime()));
+            }
+        });
+
+        findViewById(R.id.left_arrow).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText dateText = findViewById(R.id.set_date_edit_text);
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                Calendar c = Calendar.getInstance();
+                try {
+                    c.setTime(sdf.parse(dateText.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                c.add(Calendar.DATE, -1);
+                dateText.setText(sdf.format(c.getTime()));
+            }
+        });
         /*
         findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,13 +348,11 @@ public class AddFoodActivity extends AppCompatActivity {
                                 aBuilder.show();
                             } else {
                                 aBuilder.setMessage("You must enter a valid Quantity!");
-                                AlertDialog ad = aBuilder.create();
-                                ad.show();
+                                aBuilder.show();
                             }
                         } else {
                             aBuilder.setMessage("You must enter a valid food!");
-                            AlertDialog ad = aBuilder.create();
-                            ad.show();
+                            aBuilder.show();
                         }
                     } else {
                         aBuilder.setMessage("You must select a valid date!");
