@@ -140,6 +140,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="50dp"
                     android:text="@string/submit" />
+
             </LinearLayout>
 
         </LinearLayout>

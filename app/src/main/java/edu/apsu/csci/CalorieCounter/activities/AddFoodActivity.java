@@ -205,7 +205,6 @@ public class AddFoodActivity extends AppCompatActivity {
         protected JSONResultData doInBackground(Void... voids) {
             JSONResultData resultData = new JSONResultData();
 
-
             try {
                 // Establish the connection
                 URL url = new URL(builder.toString());
@@ -273,14 +272,7 @@ public class AddFoodActivity extends AppCompatActivity {
         protected void onPostExecute(final JSONResultData resultData) {
             super.onPostExecute(resultData);
 
-            if (resultData.caloriesPer100g > 0) {
-                EditText editText = findViewById(R.id.quantity_edit_text);
-                double quantity = Double.parseDouble(editText.getText().toString());
-
-                calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
-            }
-
-            if (!resultData.foodTitles.isEmpty()) {
+            if (!editText.isPerformingCompletion()) {
                 editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_list_item_1, resultData.foodTitles));
                 editText.showDropDown();
@@ -291,6 +283,15 @@ public class AddFoodActivity extends AppCompatActivity {
                         foodID = resultData.foodIDs.get(i);
                     }
                 });
+
+                EditText et = findViewById(R.id.quantity_edit_text);
+                if (!et.getText().toString().matches("")) {
+                    double quantity = Double.parseDouble(et.getText().toString());
+
+                    calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
+                    dataSource.insertFood(foodName, foodID, dateEntry, calories);
+                }
+
             }
 
             findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
@@ -298,18 +299,19 @@ public class AddFoodActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     aBuilder = new AlertDialog.Builder(AddFoodActivity.this);
                     aBuilder.setPositiveButton("OK", null);
-                    // ADD CHECKS FOR ALL EMPTY FIELDS!!
+
                     // Get the food name
                     editText = findViewById(R.id.search_foods_actv);
                     foodName = editText.getText().toString();
                     EditText et = findViewById(R.id.quantity_edit_text);
                     EditText dt = findViewById(R.id.set_date_edit_text);
-                    if(dt.getText().toString().trim().length() > 0) {
-                        if(resultData.foodTitles.contains(foodName) && !foodName.equals("")) {
-                            if(et.getText().toString().trim().length() > 0) {
+
+                    if (dt.getText().toString().trim().length() > 0) {
+                        if (resultData.foodTitles.contains(foodName) && !foodName.equals("")) {
+                            if (!et.getText().toString().matches("")) {
                                 // Get calories using the foodID
                                 doQuery(Integer.toString(foodID));
-                                dataSource.insertFood(foodName, foodID, dateEntry, calories);
+
                                 aBuilder.setMessage(foodName + " is added to database");
                                 aBuilder.show();
                             } else {
