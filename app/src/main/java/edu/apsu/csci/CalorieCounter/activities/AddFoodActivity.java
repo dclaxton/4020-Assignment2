@@ -36,9 +36,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -61,6 +63,7 @@ public class AddFoodActivity extends AppCompatActivity {
     //for database
     private DbDataSource dataSource;
     private String foodName;
+    private double qtyFood;
     private int foodID;
     private String dateEntry;
     private double calories;
@@ -288,27 +291,42 @@ public class AddFoodActivity extends AppCompatActivity {
                         foodID = resultData.foodIDs.get(i);
                     }
                 });
-
             }
 
             findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    aBuilder = new AlertDialog.Builder(AddFoodActivity.this);
+                    aBuilder.setPositiveButton("OK", null);
                     // ADD CHECKS FOR ALL EMPTY FIELDS!!
-
                     // Get the food name
                     editText = findViewById(R.id.search_foods_actv);
                     foodName = editText.getText().toString();
-
-                    // Get calories using the foodID
-                    doQuery(Integer.toString(foodID));
-
-                    dataSource.insertFood(foodName, foodID, dateEntry, calories);
-
-                    aBuilder = new AlertDialog.Builder(AddFoodActivity.this);
-                    aBuilder.setMessage(foodName + " is added to database");
-                    aBuilder.setPositiveButton("OK", null);
-                    aBuilder.show();
+                    EditText et = findViewById(R.id.quantity_edit_text);
+                    EditText dt = findViewById(R.id.set_date_edit_text);
+                    if(dt.getText().toString().trim().length() > 0) {
+                        if(resultData.foodTitles.contains(foodName) && !foodName.equals("")) {
+                            if(et.getText().toString().trim().length() > 0) {
+                                // Get calories using the foodID
+                                doQuery(Integer.toString(foodID));
+                                dataSource.insertFood(foodName, foodID, dateEntry, calories);
+                                aBuilder.setMessage(foodName + " is added to database");
+                                aBuilder.show();
+                            } else {
+                                aBuilder.setMessage("You must enter a valid Quantity!");
+                                AlertDialog ad = aBuilder.create();
+                                ad.show();
+                            }
+                        } else {
+                            aBuilder.setMessage("You must enter a valid food!");
+                            AlertDialog ad = aBuilder.create();
+                            ad.show();
+                        }
+                    } else {
+                        aBuilder.setMessage("You must select a valid date!");
+                        AlertDialog ad = aBuilder.create();
+                        ad.show();
+                    }
                 }
             });
         }
