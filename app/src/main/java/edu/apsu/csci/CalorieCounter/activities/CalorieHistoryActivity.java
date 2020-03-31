@@ -108,7 +108,6 @@ public class CalorieHistoryActivity extends AppCompatActivity {
     public void getFoods()
     {
         List<Food> foods = dataSource.getAllFood();
-
         ArrayList<String> arrayList = new ArrayList<>();
 
         for(Food food: foods)
@@ -126,10 +125,8 @@ public class CalorieHistoryActivity extends AppCompatActivity {
         calorieCount.setText("Calories: None logged for today!");
         for(Food food: foods)
         {
-
             if(food.getDateCreated().compareTo(datePicked) == 0) {
                 tv.append(food.getName() + "   " + food.getCalories() + " Cal" + "\n");
-                //tv.setText(arrayList.get(i));
                 CalCount += food.getCalories();
                 calorieCount.setText("Calories: " + df2.format(CalCount) + "");
             }
@@ -149,7 +146,6 @@ public class CalorieHistoryActivity extends AppCompatActivity {
             Log.i("DATEPICK1", datePicked);
             updateDate();
         }
-
     };
 
     private void updateDate() {
@@ -157,8 +153,6 @@ public class CalorieHistoryActivity extends AppCompatActivity {
                 new SimpleDateFormat("MM/dd/yyyy", Locale.US).format(mCalendar.getTime()));
         ((TextView) findViewById(R.id.weekday_text_view)).setText(
                 new SimpleDateFormat("EEEE", Locale.US).format(mCalendar.getTime()));
-
-        //populates View
         getFoods();
     }
 

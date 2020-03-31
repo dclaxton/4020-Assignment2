@@ -59,8 +59,6 @@ public class AddFoodActivity extends AppCompatActivity {
     private AutoCompleteTextView editText;
     private AlertDialog.Builder aBuilder;
 
-
-
     //for database
     private DbDataSource dataSource;
     private String foodName;
@@ -120,41 +118,11 @@ public class AddFoodActivity extends AppCompatActivity {
                 dateText.setText(sdf.format(c.getTime()));
             }
         });
-        /*
-        findViewById(R.id.submit_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // we need to add the food to the database
-                //  test function for now until all data is saved
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                Calendar c = Calendar.getInstance();
-                String dateStr = sdf.format(c.getTime());
-
-                // gets the food name
-                editText = findViewById(R.id.search_foods_actv);
-                foodName = editText.getText().toString();
-
-                // get id
-                doQuery(Integer.toString(foodId));
-
-                // get calories
-                //calories = 230;
-
-
-
-                //dataSource.addFoodToDb(foodName,foodId,dateStr,calories);
-                //Food food = dataSource.createFood(foodName,foodId,dateEntry,calories);
-
-            }
-        });
-
-         */
 
         editText = findViewById(R.id.search_foods_actv);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -166,7 +134,6 @@ public class AddFoodActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -179,9 +146,7 @@ public class AddFoodActivity extends AppCompatActivity {
             mCalendar.set(Calendar.YEAR, year);
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
             dateEntry = (monthOfYear + 1) + "/" + dayOfMonth + "/" + year;
-
             updateDate();
         }
 
@@ -204,7 +169,6 @@ public class AddFoodActivity extends AppCompatActivity {
             catch (NumberFormatException e) {
                 query = new QueryJSON(getApplicationContext(), search);
             }
-
             query.execute();
             query = null;
         }
@@ -215,9 +179,6 @@ public class AddFoodActivity extends AppCompatActivity {
         int pos;
         Context context = getApplicationContext();
 
-
-
-        // Constructor for Food Search API
         public QueryJSON(Context c, String searchParam)
         {
             builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/search").buildUpon();
@@ -251,7 +212,6 @@ public class AddFoodActivity extends AppCompatActivity {
                 while ((line = br.readLine()) != null) {
                     jsonData.append(line);
                 }
-
                 JSONObject reader = new JSONObject(jsonData.toString());
 
                 // If the URL contains a food ID, browse the Food Details JSON
@@ -270,7 +230,6 @@ public class AddFoodActivity extends AppCompatActivity {
                             resultData.caloriesPer100g = Double.parseDouble(calories);
                         }
                     }
-
                     // If the URL does not have a food ID, browse the Food Search JSON
                 } else {
                     JSONArray items = reader.getJSONArray("foods");
@@ -287,7 +246,6 @@ public class AddFoodActivity extends AppCompatActivity {
                         resultData.foodIDs.add(Integer.parseInt(foodId));
                     }
                 }
-
                 connection.disconnect();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -296,7 +254,6 @@ public class AddFoodActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             return resultData;
         }
 
@@ -308,7 +265,6 @@ public class AddFoodActivity extends AppCompatActivity {
                 editText.setAdapter(new ArrayAdapter<String>(getApplicationContext(),
                         android.R.layout.simple_list_item_1, resultData.foodTitles));
                 editText.showDropDown();
-
                 editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -319,7 +275,6 @@ public class AddFoodActivity extends AppCompatActivity {
                 EditText et = findViewById(R.id.quantity_edit_text);
                 if (!et.getText().toString().matches("")) {
                     double quantity = Double.parseDouble(et.getText().toString());
-
                     calories = (resultData.caloriesPer100g * resultData.servingSizeWeight * quantity) / CALORIE_BASELINE;
                     dataSource.insertFood(foodName, foodID, dateEntry, calories);
                 }
