@@ -18,6 +18,6 @@
     <string name="date_format">MM/dd/yyyy</string>
     <string name="select_date">Select date:</string>
     <string name="enter_food">Enter food:</string>
-    <string name="enter_quantity">Enter quantity:</string>
+    <string name="enter_quantity">Enter number of servings:</string>
     <string name="submit">Submit</string>
 </resources>
