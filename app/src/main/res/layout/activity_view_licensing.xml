@@ -12,12 +12,20 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
+        <ImageView
+            android:id="@+id/calorie_image_view"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5dp"
+            app:srcCompat="@drawable/calorie" />
+
         <TextView
             android:id="@+id/app_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="-4dp"
+            android:layout_toEndOf="@+id/calorie_image_view"
             android:padding="10dp"
             android:text="@string/menu"
             android:textSize="20sp" />
@@ -32,9 +40,11 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/menu_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/menu_scroll_view">
+        android:background="#D0F9E8">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,11 +55,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".5" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight=".1">
+                android:layout_weight=".1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_marginBottom="30dp"
+                    app:srcCompat="@drawable/banana" />
 
                 <TextView
                     android:layout_width="match_parent"

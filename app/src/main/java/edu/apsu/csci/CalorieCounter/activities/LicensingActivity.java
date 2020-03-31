@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.apsu.csci.CalorieCounter.R;
 import edu.apsu.csci.CalorieCounter.listeners.GoToActivity;
+import edu.apsu.csci.CalorieCounter.listeners.GoToActivityClosingPrevious;
 
 public class LicensingActivity extends AppCompatActivity {
     @Override
@@ -13,6 +14,6 @@ public class LicensingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_licensing);
 
-        findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivity(this, MenuActivity.class));
+        findViewById(R.id.to_menu_button).setOnClickListener(new GoToActivityClosingPrevious(this, MenuActivity.class));
     }
 }

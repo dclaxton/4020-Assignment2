@@ -12,12 +12,20 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
+        <ImageView
+            android:id="@+id/calorie_image_view"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5dp"
+            app:srcCompat="@drawable/calorie" />
+
         <TextView
             android:id="@+id/app_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="-4dp"
+            android:layout_toEndOf="@+id/calorie_image_view"
             android:padding="10dp"
             android:text="@string/menu"
             android:textSize="20sp" />
@@ -34,9 +42,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="16dp"
+        android:background="#F2E2FF"
         android:padding="10dp">
 
         <ImageButton
@@ -45,6 +52,7 @@
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
             android:background="@null"
             android:contentDescription="@string/previous_day"
             android:scaleType="centerInside"
@@ -75,16 +83,23 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
             android:background="@null"
             android:contentDescription="@string/next_day"
             android:scaleType="centerInside"
             android:src="@drawable/right_arrow" />
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
     <ScrollView
         android:id="@+id/scrollviewfoods"
         android:layout_width="match_parent"
-        android:layout_height="464dp">
+        android:layout_height="match_parent"
+        android:background="#F2E2FF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,15 +110,18 @@
                 android:id="@+id/textViewfood"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No Date Selected"
-                android:textSize="24sp" />
-        </LinearLayout>
-    </ScrollView>
+                android:padding="10dp"
+                android:text="@string/no_date"
+                android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textViewTotalCalories"
-        android:layout_width="match_parent"
-        android:layout_height="34dp"
-        android:textSize="30sp" />
+            <TextView
+                android:id="@+id/textViewTotalCalories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

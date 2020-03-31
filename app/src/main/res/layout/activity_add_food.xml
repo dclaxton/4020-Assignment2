@@ -12,12 +12,20 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
+        <ImageView
+            android:id="@+id/calorie_image_view"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5dp"
+            app:srcCompat="@drawable/calorie" />
+
         <TextView
             android:id="@+id/app_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="-4dp"
+            android:layout_toEndOf="@+id/calorie_image_view"
             android:padding="10dp"
             android:text="@string/menu"
             android:textSize="20sp" />
@@ -34,9 +42,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="16dp"
+        android:background="#F9D0D0"
         android:padding="10dp">
 
         <ImageButton
@@ -45,6 +52,7 @@
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
             android:background="@null"
             android:contentDescription="@string/previous_day"
             android:scaleType="centerInside"
@@ -75,6 +83,7 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
             android:background="@null"
             android:contentDescription="@string/next_day"
             android:scaleType="centerInside"
@@ -84,7 +93,8 @@
     <ScrollView
         android:id="@+id/menu_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="#F9D0D0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,6 +121,7 @@
                     android:id="@+id/search_foods_actv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:completionThreshold="1"
                     android:dropDownAnchor="@id/food_text_view"
                     android:dropDownWidth="match_parent"
@@ -140,6 +151,14 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="50dp"
                     android:text="@string/submit" />
+
+                <ImageView
+                    android:id="@+id/cake_image_view"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="50dp"
+                    app:srcCompat="@drawable/cake" />
 
             </LinearLayout>
 

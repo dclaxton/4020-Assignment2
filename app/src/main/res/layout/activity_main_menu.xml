@@ -12,65 +12,85 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
+        <ImageView
+            android:id="@+id/calorie_image_view"
+            android:layout_width="55dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5dp"
+            app:srcCompat="@drawable/calorie" />
+
         <TextView
             android:id="@+id/app_title_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="-4dp"
+            android:layout_toEndOf="@+id/calorie_image_view"
             android:padding="10dp"
             android:text="@string/menu"
             android:textSize="20sp" />
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/menu_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/menu_scroll_view">
+        android:background="#B5DDFF">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="horizontal">
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".16"/>
+                android:layout_weight=".16" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight=".1">
+                android:layout_weight=".1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/apple_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="20dp"
+                    app:srcCompat="@drawable/apple" />
 
                 <Button
                     android:id="@+id/new_entry_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/entry"/>
+                    android:text="@string/entry" />
 
                 <Button
                     android:id="@+id/calorie_history_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/history"/>
+                    android:text="@string/history" />
 
                 <Button
                     android:id="@+id/licensing_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/licensing"/>
+                    android:text="@string/licensing" />
 
                 <Button
                     android:id="@+id/exit_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="onExitButton"
-                    android:text="@string/exit"/>
+                    android:text="@string/exit" />
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".16"/>
+                android:layout_weight=".16" />
         </LinearLayout>
     </ScrollView>
 
