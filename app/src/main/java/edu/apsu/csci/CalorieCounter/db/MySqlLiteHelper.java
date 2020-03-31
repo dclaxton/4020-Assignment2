@@ -44,7 +44,7 @@ public class MySqlLiteHelper extends SQLiteOpenHelper {
                 DetailsColumns.primary_key + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 DetailsColumns.food_id + " INTEGER NOT NULL , " +
                 DetailsColumns.food_name + " TEXT ," +
-                DetailsColumns.food_calories + " REAL, " +
+                DetailsColumns.food_calories + " REAL , " +
                 DetailsColumns.date_created + " TEXT " +
                 ");";
 

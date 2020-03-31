@@ -57,7 +57,7 @@ public class DbDataSource {
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_name.toString(), foodName);
         contentValues.put(MySqlLiteHelper.DetailsColumns.food_calories.toString(), calories);
         contentValues.put(MySqlLiteHelper.DetailsColumns.date_created.toString(), dateCreated);
-
+        open();
         database.insert(MySqlLiteHelper.FOOD_DETAILS_TABLE, null, contentValues);
     }
 
