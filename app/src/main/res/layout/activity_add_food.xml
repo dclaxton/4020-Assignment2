@@ -119,13 +119,14 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/search_foods_actv"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:completionThreshold="1"
                     android:dropDownAnchor="@id/food_text_view"
                     android:dropDownWidth="match_parent"
-                    android:dropDownHeight="wrap_content" />
+                    android:dropDownHeight="wrap_content"
+                    android:padding="10dp" />
 
                 <TextView
                     android:id="@+id/quantity_text_view"

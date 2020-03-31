@@ -60,9 +60,11 @@ public class CalorieHistoryActivity extends AppCompatActivity {
         findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(CalorieHistoryActivity.this, date, mCalendar
-                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
-                        mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dpDialog = new DatePickerDialog(
+                        CalorieHistoryActivity.this, date, mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                dpDialog.getDatePicker().setMaxDate(mCalendar.getTimeInMillis());
+                dpDialog.show();
             }
         });
 

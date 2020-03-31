@@ -81,9 +81,11 @@ public class AddFoodActivity extends AppCompatActivity {
         findViewById(R.id.set_date_edit_text).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddFoodActivity.this, date, mCalendar
-                        .get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
-                        mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dpDialog = new DatePickerDialog(
+                        AddFoodActivity.this, date, mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                dpDialog.getDatePicker().setMaxDate(mCalendar.getTimeInMillis());
+                dpDialog.show();
             }
         });
 
@@ -127,7 +129,7 @@ public class AddFoodActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!editText.isPerformingCompletion()) {
+                if (!editText.isPerformingCompletion() && !editText.getText().toString().isEmpty()) {
                     doQuery(charSequence.toString());
                 }
             }
@@ -232,17 +234,21 @@ public class AddFoodActivity extends AppCompatActivity {
                     }
                     // If the URL does not have a food ID, browse the Food Search JSON
                 } else {
+                    Log.i("URL", url.toString());
                     JSONArray items = reader.getJSONArray("foods");
                     for (int i = 0; i < items.length(); i++) {
                         JSONObject item = items.getJSONObject(i);
 
-                        String title = item.getString("description") + " | " + item.get("brandOwner");
-                        resultData.foodTitles.add(title);
-
-                        String company = item.getString("brandOwner");
-                        resultData.companyNames.add(company);
-
                         String foodId = item.getString("fdcId");
+                        String title = item.getString("description");
+
+                        if (item.has("brandOwner")) {
+                            title = title + " | " + item.get("brandOwner");
+                            String company = item.getString("brandOwner");
+                            resultData.companyNames.add(company);
+                        }
+
+                        resultData.foodTitles.add(title);
                         resultData.foodIDs.add(Integer.parseInt(foodId));
                     }
                 }
